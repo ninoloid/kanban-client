@@ -6,8 +6,8 @@
         :key="project.id"
         :project="project"
         :BASEURL="BASEURL"
-        @set-projectId2="setProjectId2"
-        @to-kanban="toKanban"
+        @setProjectId="setProjectId"
+        @changePage="changePage"
       ></ProjectItem>
 
       <!-- ADD PROJECT BUTTON -->
@@ -51,12 +51,11 @@ export default {
           console.log(err);
         });
     },
-    setProjectId2(projectId) {
-      // this.ProjectId = projectId;
-      this.$emit("set-projectId", projectId);
+    setProjectId(projectId) {
+      this.$emit("setProjectId", projectId);
     },
-    toKanban(page) {
-      this.$emit("change-page", page);
+    changePage(page) {
+      this.$emit("changePage", page);
     }
   },
   created() {

@@ -45,7 +45,7 @@ export default {
     logout() {
       localStorage.clear();
       this.searching = false;
-      this.$emit("change-page", "login");
+      this.$emit("changePage", "login");
     }
   },
   computed: {

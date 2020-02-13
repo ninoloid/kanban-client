@@ -8,24 +8,66 @@
         <KanbanItem v-for="task in tasks" :key="task.id" :task="task">
         </KanbanItem>
 
-        <a class="btn-floating halfway-fab waves-effect waves-light red"
-          ><i class="material-icons">add</i></a
-        >
+        <AddTaskForm @addTask="addTask"></AddTaskForm>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import axios from "axios";
 import KanbanItem from "./KanbanItem";
+import AddTaskForm from "./addTaskForm";
 
 export default {
   props: {
     title: String,
-    tasks: Array
+    tasks: Array,
+    BASEURL: String,
+    ProjectId: Number
   },
   components: {
-    KanbanItem
+    KanbanItem,
+    AddTaskForm
+  },
+  computed: {
+    getCategoryId() {
+      let CategoryId;
+      if (this.title === "Backlog") {
+        CategoryId = 1;
+      } else if (this.title === "Todo") {
+        CategoryId = 2;
+      } else if (this.title === "Ongoing") {
+        CategoryId = 3;
+      } else {
+        CategoryId = 4;
+      }
+      return CategoryId;
+    }
+  },
+  methods: {
+    addTask(payload) {
+      axios({
+        method: "post",
+        url: this.BASEURL + "task",
+        data: {
+          title: payload.title,
+          description: payload.description,
+          CategoryId: this.getCategoryId,
+          ProjectId: this.ProjectId
+        },
+        headers: {
+          access_token: localStorage.access_token
+        }
+      })
+        .then(() => {
+          this.$alertify.success(`Task added successfully`);
+          this.$emit("fetchTask");
+        })
+        .catch(err => {
+          this.$alertify.error(err.response.data.msg);
+        });
+    }
   }
 };
 </script>

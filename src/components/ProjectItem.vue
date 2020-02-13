@@ -2,7 +2,7 @@
   <div
     class="col s6 m4 l3 xl2"
     style="padding: 0 0.3rem"
-    @click="sendProjectId()"
+    @click="setProjectId()"
   >
     <div class="card" style="background:url('../assets/img/White.jpg')">
       <div class="card-content">
@@ -21,9 +21,9 @@ export default {
     BASEURL: String
   },
   methods: {
-    sendProjectId() {
-      this.$emit("set-projectId2", this.project.id);
-      this.$emit("to-kanban", "kanban");
+    setProjectId() {
+      this.$emit("setProjectId", this.project.id);
+      this.$emit("changePage", "kanban");
     }
   }
 };

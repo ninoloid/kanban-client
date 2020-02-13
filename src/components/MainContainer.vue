@@ -1,21 +1,45 @@
 <template>
   <div>
-    <NavBar :currentPage="currentPage" @change-page="changePage"></NavBar>
+    <NavBar :currentPage="currentPage" @changePage="changePage"></NavBar>
 
-    <Login v-if="currentPage === 'login'" @change-page="changePage"></Login>
+    <Login v-if="currentPage === 'login'" @changePage="changePage"></Login>
 
     <div class="row" v-else-if="currentPage === 'kanban'">
-      <KanbanContainer title="Backlog" :tasks="getBacklog"></KanbanContainer>
-      <KanbanContainer title="Todo" :tasks="getTodo"></KanbanContainer>
-      <KanbanContainer title="Ongoing" :tasks="getOngoing"></KanbanContainer>
-      <KanbanContainer title="Done" :tasks="getDone"></KanbanContainer>
+      <KanbanContainer
+        title="Backlog"
+        :tasks="getBacklog"
+        :BASEURL="BASEURL"
+        :ProjectId="ProjectId"
+        @fetchTask="fetchTask"
+      ></KanbanContainer>
+      <KanbanContainer
+        title="Todo"
+        :tasks="getTodo"
+        :BASEURL="BASEURL"
+        :ProjectId="ProjectId"
+        @fetchTask="fetchTask"
+      ></KanbanContainer>
+      <KanbanContainer
+        title="Ongoing"
+        :tasks="getOngoing"
+        :BASEURL="BASEURL"
+        :ProjectId="ProjectId"
+        @fetchTask="fetchTask"
+      ></KanbanContainer>
+      <KanbanContainer
+        title="Done"
+        :tasks="getDone"
+        :BASEURL="BASEURL"
+        :ProjectId="ProjectId"
+        @fetchTask="fetchTask"
+      ></KanbanContainer>
     </div>
 
     <Project
       v-if="currentPage === 'project'"
       :BASEURL="BASEURL"
-      @set-projectId="setProjectId"
-      @change-page="changePage"
+      @setProjectId="setProjectId"
+      @changePage="changePage"
     ></Project>
   </div>
 </template>
@@ -37,8 +61,8 @@ export default {
   data() {
     return {
       BASEURL: "http://localhost:3000/",
-      currentPage: "",
-      ProjectId: "",
+      currentPage: null,
+      ProjectId: null,
       tasks: []
     };
   },
@@ -80,7 +104,6 @@ export default {
   },
   watch: {
     ProjectId() {
-      // console.log(this.ProjectId);
       this.fetchTask();
     }
   },

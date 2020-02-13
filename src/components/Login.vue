@@ -162,7 +162,7 @@ export default {
       })
         .then(({ data }) => {
           this.$alertify.success(`Welcome back, ${this.identification}!`);
-          this.$emit("change-page", "project");
+          this.$emit("changePage", "project");
           this.identification = "";
           this.password = "";
 
@@ -187,7 +187,7 @@ export default {
       })
         .then(({ data }) => {
           this.$alertify.success(`Welcome, ${this.username}!`);
-          this.$emit("change-page", "project");
+          this.$emit("changePage", "project");
           this.username = "";
           this.email = "";
           this.password = "";

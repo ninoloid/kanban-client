@@ -2,7 +2,10 @@
   <div>
     <div class="card" style="background: url('../assets/img/Blackboard.jpg')">
       <div class="card-content">
-        <span class="card-title activator white-text text-darken-4">
+        <span
+          class="card-title activator white-text text-darken-4"
+          style="font-weight: bold;"
+        >
           {{ task.title }}<i class="material-icons right">more_vert</i>
         </span>
       </div>
@@ -10,8 +13,11 @@
         class="card-reveal"
         style="background: url('../assets/img/Darkblue.jpg')"
       >
-        <span class="card-title white-text text-darken-4">
-          {{ task.title }}<i class="material-icons right">close</i>
+        <span
+          class="card-title white-text text-darken-4"
+          style="font-size: 1.3rem; font-weight: bold;"
+        >
+          Description<i class="material-icons right">close</i>
         </span>
         <p class="white-text">
           {{ task.description }}
