@@ -40,21 +40,11 @@ export default {
             const data = {
               name: result.value[0]
             };
-            // this.$store.dispatch("addCard", data).then(() => {
-            //   this.$swal({
-            //     icon: "success",
-            //     title: "Added to the database",
-            //     showConfirmButton: false,
-            //     timer: 1500
-            //   });
-            // });
-
             this.addToDatabase(data);
           }
         });
     },
     addToDatabase(data) {
-      console.log(data);
       axios({
         method: "post",
         url: "http://localhost:3000/project",
@@ -67,9 +57,9 @@ export default {
       })
         .then(() => {
           this.$alertify.success("Project added successfully");
+          this.$emit("refetchProject");
         })
         .catch(err => {
-          console.log(err.response);
           if (err.response.data.errors) {
             this.$alertify.error(err.response.data.errors[0]);
           } else {

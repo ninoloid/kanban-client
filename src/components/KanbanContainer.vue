@@ -5,7 +5,13 @@
         <span class="card-title" style="font-weight: bold;">{{ title }}</span>
 
         <!-- CARDS -->
-        <KanbanItem v-for="task in tasks" :key="task.id" :task="task">
+        <KanbanItem
+          v-for="task in tasks"
+          :key="task.id"
+          :task="task"
+          :BASEURL="BASEURL"
+          @fetchTask="fetchTask"
+        >
         </KanbanItem>
 
         <AddTaskForm @addTask="addTask"></AddTaskForm>
@@ -62,11 +68,15 @@ export default {
       })
         .then(() => {
           this.$alertify.success(`Task added successfully`);
-          this.$emit("fetchTask");
+          // this.$emit("fetchTask");
+          this.fetchTask();
         })
         .catch(err => {
           this.$alertify.error(err.response.data.msg);
         });
+    },
+    fetchTask() {
+      this.$emit("fetchTask");
     }
   }
 };
@@ -84,7 +94,7 @@ export default {
 
 @media (min-width: 992px) {
   .card .kanbanItem {
-    max-height: 83vh;
+    max-height: 81.2vh;
   }
 }
 

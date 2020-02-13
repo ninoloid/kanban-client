@@ -4,10 +4,39 @@
       <div class="card-content">
         <span
           class="card-title activator white-text text-darken-4"
-          style="font-weight: bold;"
+          style="font-weight: bold; margin-bottom: 1rem"
         >
           {{ task.title }}<i class="material-icons right">more_vert</i>
         </span>
+        <div
+          style="position: absolute; bottom: 0; left: 0; width: 100%; display: flex; justify-content: space-between"
+        >
+          <button
+            class="changeCategory waves-effect waves-light btn-small blue"
+            @click.prevent="changeCategory('prev')"
+            v-if="task.CategoryId > 1"
+          >
+            <i class="material-icons">arrow_back</i>
+          </button>
+          <button
+            class="changeCategory waves-effect waves-light btn-small yellow"
+          >
+            <i class="material-icons">edit</i>
+          </button>
+          <button
+            class="changeCategory waves-effect waves-light btn-small red"
+            @click.prevent="deleteTask"
+          >
+            <i class="material-icons">delete_sweep</i>
+          </button>
+          <button
+            class="changeCategory waves-effect waves-light btn-small green"
+            @click.prevent="changeCategory('next')"
+            v-if="task.CategoryId < 4"
+          >
+            <i class="material-icons">arrow_forward</i>
+          </button>
+        </div>
       </div>
       <div
         class="card-reveal"
@@ -28,14 +57,81 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   props: {
-    task: Object
+    task: Object,
+    BASEURL: String
+  },
+  methods: {
+    changeCategory(type) {
+      let CategoryId = this.task.CategoryId;
+      const id = this.task.id;
+      console.log("sebelum update", CategoryId);
+      if (CategoryId >= 2 && type === "prev") {
+        CategoryId--;
+      } else if (CategoryId <= 3 && type === "next") {
+        CategoryId++;
+      } else {
+        this.$alertify.error("Cannot change category");
+      }
+      console.log("setelah update", CategoryId);
+      axios({
+        method: "patch",
+        url: this.BASEURL + "task/" + id,
+        data: {
+          CategoryId
+        },
+        headers: {
+          access_token: localStorage.access_token
+        }
+      })
+        .then(({ data }) => {
+          this.$alertify.success(data.msg);
+          this.$emit("fetchTask");
+        })
+        .catch(err => {
+          this.$alertify.error(err.response.data.msg);
+        });
+    },
+    deleteTask() {
+      const id = this.task.id;
+      axios({
+        method: "delete",
+        url: this.BASEURL + "task/" + id,
+        headers: {
+          access_token: localStorage.access_token
+        }
+      })
+        .then(({ data }) => {
+          this.$alertify.success(data.msg);
+          this.$emit("fetchTask");
+        })
+        .catch(err => {
+          this.$alertify.error(err.response.data.msg);
+        });
+    }
   }
 };
 </script>
 
 <style scoped>
+.card .card-reveal {
+  padding: 0.5rem 1rem;
+}
+
+.card .card-content .card-title {
+  margin-bottom: 0;
+}
+
+.changeCategory {
+  color: black;
+  font-weight: bold;
+  height: 1.5rem;
+  line-height: 1.5rem;
+}
+
 ::-webkit-scrollbar {
   width: 0.5rem;
 }

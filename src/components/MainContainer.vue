@@ -1,8 +1,16 @@
 <template>
   <div>
-    <NavBar :currentPage="currentPage" @changePage="changePage"></NavBar>
+    <NavBar
+      :currentPage="currentPage"
+      @changePage="changePage"
+      :currentActiveUser="currentActiveUser"
+    ></NavBar>
 
-    <Login v-if="currentPage === 'login'" @changePage="changePage"></Login>
+    <Login
+      v-if="currentPage === 'login'"
+      @changePage="changePage"
+      @setCurrentActiveUser="setCurrentActiveUser"
+    ></Login>
 
     <div class="row" v-else-if="currentPage === 'kanban'">
       <KanbanContainer
@@ -33,6 +41,12 @@
         :ProjectId="ProjectId"
         @fetchTask="fetchTask"
       ></KanbanContainer>
+
+      <div class="backButtonContainer">
+        <a @click="changePage('project')"
+          ><i class="medium material-icons backButton">fast_rewind</i></a
+        >
+      </div>
     </div>
 
     <Project
@@ -41,6 +55,13 @@
       @setProjectId="setProjectId"
       @changePage="changePage"
     ></Project>
+
+    <AddCollaborator
+      v-if="currentPage === 'addCollaborator'"
+      :ProjectId="ProjectId"
+      :BASEURL="BASEURL"
+      @changePage="changePage"
+    ></AddCollaborator>
   </div>
 </template>
 
@@ -49,6 +70,7 @@ import KanbanContainer from "./KanbanContainer";
 import NavBar from "./Navbar";
 import Login from "./Login";
 import Project from "./Project";
+import AddCollaborator from "./Collaborator";
 import axios from "axios";
 
 export default {
@@ -56,25 +78,31 @@ export default {
     KanbanContainer,
     NavBar,
     Login,
-    Project
+    Project,
+    AddCollaborator
   },
   data() {
     return {
       BASEURL: "http://localhost:3000/",
       currentPage: null,
       ProjectId: null,
-      tasks: []
+      tasks: [],
+      currentActiveUser: null
     };
   },
   methods: {
     changePage(page) {
       this.currentPage = page;
     },
+    setCurrentActiveUser(user) {
+      this.currentActiveUser = user;
+    },
     checkToken() {
       if (!localStorage.access_token) {
         this.currentPage = "login";
       } else {
         this.currentPage = "project";
+        this.currentActiveUser = localStorage.username;
       }
     },
     setProjectId(projectId) {
@@ -95,7 +123,7 @@ export default {
           this.tasks = data;
         })
         .catch(err => {
-          console.log(err);
+          this.$alertify.error(err.response.data.msg);
         });
     }
   },
@@ -124,5 +152,21 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.backButtonContainer {
+  position: fixed;
+  bottom: -0.5rem;
+  left: 0.5rem;
+}
+.backButton {
+  cursor: pointer;
+  color: red;
+  transition: 1s;
+}
+
+.backButton:hover {
+  cursor: pointer;
+  color: blue;
+  transition: 1s;
+}
 </style>

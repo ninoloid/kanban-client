@@ -8,10 +8,11 @@
         :BASEURL="BASEURL"
         @setProjectId="setProjectId"
         @changePage="changePage"
+        @refetchProject="refetchProject"
       ></ProjectItem>
 
       <!-- ADD PROJECT BUTTON -->
-      <AddProject></AddProject>
+      <AddProject @refetchProject="refetchProject"></AddProject>
       <!--  -->
     </div>
   </div>
@@ -56,6 +57,9 @@ export default {
     },
     changePage(page) {
       this.$emit("changePage", page);
+    },
+    refetchProject() {
+      this.fetchProject();
     }
   },
   created() {

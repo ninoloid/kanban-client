@@ -7,8 +7,11 @@
         ><i class="material-icons">view_day</i>Kanbandung</a
       >
       <ul id="helloUsername" class="left">
-        <li style="margin-left: 1rem; font-size: 1.5rem">
-          Hello, {{ username }}
+        <li
+          v-if="currentPage !== 'login'"
+          style="margin-left: 1rem; font-size: 1.5rem"
+        >
+          Hello, {{ currentActiveUser }}
         </li>
       </ul>
       <ul id="nav-mobile" class="right">
@@ -32,14 +35,16 @@ import SearchBar from "./SearchBar";
 export default {
   data() {
     return {
-      searching: false
+      searching: false,
+      username: null
     };
   },
   components: {
     SearchBar
   },
   props: {
-    currentPage: String
+    currentPage: String,
+    currentActiveUser: String
   },
   methods: {
     logout() {
@@ -48,9 +53,9 @@ export default {
       this.$emit("changePage", "login");
     }
   },
-  computed: {
-    username() {
-      return localStorage.username;
+  watch: {
+    currentActiveUser(username) {
+      this.username = username;
     }
   }
 };
