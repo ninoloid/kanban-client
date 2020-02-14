@@ -40,6 +40,15 @@
                       style="width: 100%; display: flex;justify-content: center;"
                     >
                       <button
+                        class="btn waves-effect waves-light green"
+                        style="margin-right: 2rem;"
+                        @click.prevent="backToKanban"
+                      >
+                        BACK
+                        <i class="material-icons right">arrow_back</i>
+                      </button>
+
+                      <button
                         class="btn waves-effect waves-light orange"
                         type="submit"
                       >
@@ -112,6 +121,9 @@ export default {
         .catch(err => {
           this.$alertify.error(err.response.data.msg);
         });
+    },
+    backToKanban() {
+      this.$emit("changePage", "kanban");
     }
   },
   created() {

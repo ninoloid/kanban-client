@@ -12,7 +12,10 @@
       @setCurrentActiveUser="setCurrentActiveUser"
     ></Login>
 
-    <div class="row" v-else-if="currentPage === 'kanban'">
+    <div
+      class="row"
+      v-else-if="currentPage === 'kanban' || currentPage === 'editTask'"
+    >
       <KanbanContainer
         title="Backlog"
         :tasks="getBacklog"
@@ -150,7 +153,14 @@ export default {
   },
   watch: {
     ProjectId() {
-      this.fetchTask();
+      if (localStorage.access_token) {
+        this.fetchTask();
+      }
+    },
+    currentPage() {
+      if (localStorage.access_token) {
+        this.fetchTask();
+      }
     }
   },
   computed: {

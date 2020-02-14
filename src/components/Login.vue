@@ -110,7 +110,7 @@
                   <GoogleLogin
                     :params="params"
                     :renderParams="renderParams"
-                    :onSuccess="onSuccess"
+                    :onSuccess="onSignIn"
                     style="margin-top: 20px"
                     v-if="haveAccount"
                   ></GoogleLogin>
@@ -211,9 +211,24 @@ export default {
       this.password = "";
       this.haveAccount = bool;
     },
-    onSuccess(googleUser) {
-      console.log(googleUser);
-      console.log(googleUser.getBasicProfile());
+    onSignIn(googleUser) {
+      const google_token = googleUser.getAuthResponse().id_token;
+      axios({
+        method: "POST",
+        url: "http://localhost:3000/google-auth",
+        data: { google_token }
+      })
+        .then(({ data }) => {
+          localStorage.access_token = data.token;
+          localStorage.username = data.username;
+
+          this.$alertify.success(`Welcome, ${data.username}!`);
+          this.$emit("changePage", "project");
+          this.$emit("setCurrentActiveUser", data.username);
+        })
+        .catch(err => {
+          this.$alertify.error(err.response.data.msg);
+        });
     }
   }
 };

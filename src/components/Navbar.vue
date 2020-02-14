@@ -15,22 +15,24 @@
         </li>
       </ul>
       <ul id="nav-mobile" class="right">
-        <li v-if="currentPage !== 'login'">
+        <!-- <li v-if="currentPage !== 'login'">
           <a @click="searching = !searching"
             ><i class="material-icons">search</i></a
           >
-        </li>
+        </li> -->
         <li v-if="currentPage !== 'login'">
           <a @click.prevent="logout">Sign Out</a>
         </li>
       </ul>
-      <SearchBar v-if="searching"></SearchBar>
+      <!-- <SearchBar v-if="searching"></SearchBar> -->
     </div>
   </nav>
 </template>
 
 <script>
-import SearchBar from "./SearchBar";
+import Vue from "vue";
+import { LoaderPlugin } from "vue-google-login";
+// import SearchBar from "./SearchBar";
 
 export default {
   data() {
@@ -38,9 +40,6 @@ export default {
       searching: false,
       username: null
     };
-  },
-  components: {
-    SearchBar
   },
   props: {
     currentPage: String,
@@ -50,7 +49,13 @@ export default {
     logout() {
       localStorage.clear();
       this.searching = false;
+      this.signOut();
       this.$emit("changePage", "login");
+    },
+    signOut() {
+      Vue.GoogleAuth.then(auth2 => {
+        auth2.signOut();
+      });
     }
   },
   watch: {
