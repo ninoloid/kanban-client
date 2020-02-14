@@ -150,11 +150,14 @@ export default {
       }
     };
   },
+  props: {
+    BASEURL: String
+  },
   methods: {
     login() {
       axios({
         method: "post",
-        url: "http://localhost:3000/login",
+        url: this.BASEURL + "login",
         data: {
           identification: this.identification,
           password: this.password
@@ -179,7 +182,7 @@ export default {
     register() {
       axios({
         method: "post",
-        url: "http://localhost:3000/register",
+        url: this.BASEURL + "register",
         data: {
           username: this.username,
           email: this.email,
@@ -215,7 +218,7 @@ export default {
       const google_token = googleUser.getAuthResponse().id_token;
       axios({
         method: "POST",
-        url: "http://localhost:3000/google-auth",
+        url: this.BASEURL + "google-auth",
         data: { google_token }
       })
         .then(({ data }) => {

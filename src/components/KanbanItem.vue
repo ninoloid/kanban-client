@@ -69,7 +69,6 @@ export default {
     changeCategory(type) {
       let CategoryId = this.task.CategoryId;
       const id = this.task.id;
-      console.log("sebelum update", CategoryId);
       if (CategoryId >= 2 && type === "prev") {
         CategoryId--;
       } else if (CategoryId <= 3 && type === "next") {
@@ -77,7 +76,6 @@ export default {
       } else {
         this.$alertify.error("Cannot change category");
       }
-      console.log("setelah update", CategoryId);
       axios({
         method: "patch",
         url: this.BASEURL + "task/" + id,

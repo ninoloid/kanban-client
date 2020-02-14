@@ -10,6 +10,7 @@
       v-if="currentPage === 'login'"
       @changePage="changePage"
       @setCurrentActiveUser="setCurrentActiveUser"
+      :BASEURL="BASEURL"
     ></Login>
 
     <div
