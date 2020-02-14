@@ -19,6 +19,7 @@
         :BASEURL="BASEURL"
         :ProjectId="ProjectId"
         @fetchTask="fetchTask"
+        @setTaskId="showEditTask"
       ></KanbanContainer>
       <KanbanContainer
         title="Todo"
@@ -26,6 +27,7 @@
         :BASEURL="BASEURL"
         :ProjectId="ProjectId"
         @fetchTask="fetchTask"
+        @setTaskId="showEditTask"
       ></KanbanContainer>
       <KanbanContainer
         title="Ongoing"
@@ -33,6 +35,7 @@
         :BASEURL="BASEURL"
         :ProjectId="ProjectId"
         @fetchTask="fetchTask"
+        @setTaskId="showEditTask"
       ></KanbanContainer>
       <KanbanContainer
         title="Done"
@@ -40,6 +43,7 @@
         :BASEURL="BASEURL"
         :ProjectId="ProjectId"
         @fetchTask="fetchTask"
+        @setTaskId="showEditTask"
       ></KanbanContainer>
 
       <div class="backButtonContainer">
@@ -62,6 +66,13 @@
       :BASEURL="BASEURL"
       @changePage="changePage"
     ></AddCollaborator>
+
+    <EditTask
+      v-if="currentPage === 'editTask'"
+      :TaskId="TaskId"
+      :BASEURL="BASEURL"
+      @changePage="changePage"
+    ></EditTask>
   </div>
 </template>
 
@@ -71,6 +82,7 @@ import NavBar from "./Navbar";
 import Login from "./Login";
 import Project from "./Project";
 import AddCollaborator from "./Collaborator";
+import EditTask from "./EditTask";
 import axios from "axios";
 
 export default {
@@ -79,7 +91,8 @@ export default {
     NavBar,
     Login,
     Project,
-    AddCollaborator
+    AddCollaborator,
+    EditTask
   },
   data() {
     return {
@@ -87,7 +100,8 @@ export default {
       currentPage: null,
       ProjectId: null,
       tasks: [],
-      currentActiveUser: null
+      currentActiveUser: null,
+      TaskId: null
     };
   },
   methods: {
@@ -107,6 +121,10 @@ export default {
     },
     setProjectId(projectId) {
       this.ProjectId = projectId;
+    },
+    showEditTask(taskId) {
+      this.TaskId = taskId;
+      this.currentPage = "editTask";
     },
     fetchTask() {
       axios({

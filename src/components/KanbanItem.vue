@@ -20,6 +20,7 @@
           </button>
           <button
             class="changeCategory waves-effect waves-light btn-small yellow"
+            @click.prevent="setTaskId(task.id)"
           >
             <i class="material-icons">edit</i>
           </button>
@@ -111,6 +112,9 @@ export default {
         .catch(err => {
           this.$alertify.error(err.response.data.msg);
         });
+    },
+    setTaskId(taskId) {
+      this.$emit("setTaskId", taskId);
     }
   }
 };

@@ -11,6 +11,7 @@
           :task="task"
           :BASEURL="BASEURL"
           @fetchTask="fetchTask"
+          @setTaskId="setTaskId"
         >
         </KanbanItem>
 
@@ -77,7 +78,13 @@ export default {
     },
     fetchTask() {
       this.$emit("fetchTask");
+    },
+    setTaskId(taskId) {
+      this.$emit("setTaskId", taskId);
     }
+  },
+  created() {
+    this.fetchTask();
   }
 };
 </script>
