@@ -16,7 +16,7 @@ import swal from "vue-sweetalert2";
 export default {
   props: {
     BASEURL: String
-  }
+  },
   methods: {
     addProjectForm() {
       this.$swal
