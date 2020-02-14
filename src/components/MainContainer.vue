@@ -100,7 +100,7 @@ export default {
   },
   data() {
     return {
-      BASEURL: "http://localhost:3000/",
+      BASEURL: "https://sleepy-lowlands-09717.herokuapp.com/",
       currentPage: null,
       ProjectId: null,
       tasks: [],

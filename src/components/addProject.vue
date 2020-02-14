@@ -14,11 +14,9 @@ import axios from "axios";
 import swal from "vue-sweetalert2";
 
 export default {
-  data() {
-    return {
-      // name: ""
-    };
-  },
+  props: {
+    BASEURL: String
+  }
   methods: {
     addProjectForm() {
       this.$swal
@@ -47,7 +45,7 @@ export default {
     addToDatabase(data) {
       axios({
         method: "post",
-        url: "http://localhost:3000/project",
+        url: this.BASEURL + "project",
         data: {
           name: data.name
         },

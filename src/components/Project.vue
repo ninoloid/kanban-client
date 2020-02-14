@@ -12,7 +12,10 @@
       ></ProjectItem>
 
       <!-- ADD PROJECT BUTTON -->
-      <AddProject @refetchProject="refetchProject"></AddProject>
+      <AddProject
+        @refetchProject="refetchProject"
+        :BASEURL="BASEURL"
+      ></AddProject>
       <!--  -->
     </div>
   </div>
